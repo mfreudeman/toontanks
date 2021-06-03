@@ -26,6 +26,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	virtual void RotateTurret(FVector LookAtTarget) override;
+
+	virtual void FireProjectile() override;
+
+	virtual void HandleDestruction() override;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
@@ -37,16 +43,18 @@ private:
 	FVector MoveDirection;
 	FQuat RotationDirection;
 
+	APlayerController* PlayerControllerRef;
+
 	void CalculateMoveInput(float value);
 	void CalculateRotateInput(float value);
 
 	void Move();
 	void Rotate();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float MoveSpeed = 100.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	float MoveSpeed = 500.f;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	float RotateSpeed = 100.f;
 
 };
