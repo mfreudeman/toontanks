@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "TankGameMoreBase.generated.h"
+#include "TankGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOONTANKS_API ATankGameMoreBase : public AGameModeBase
+class TOONTANKS_API ATankGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
