@@ -61,6 +61,8 @@ void APawnTank::FireProjectile()
 void APawnTank::HandleDestruction()
 {
 	Super::HandleDestruction();
+
+	Destroy();
 }
 
 void APawnTank::CalculateMoveInput(float value)
