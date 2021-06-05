@@ -25,6 +25,8 @@ public:
 
 	virtual void HandleDestruction() override;
 
+	bool IsPlayerAlive();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -44,6 +46,7 @@ private:
 	FQuat RotationDirection;
 
 	APlayerController* PlayerControllerRef;
+	bool bPlayerIsAlive = true;
 
 	void CalculateMoveInput(float value);
 	void CalculateRotateInput(float value);

@@ -43,17 +43,15 @@ void APawnTurret::FireProjectile()
 void APawnTurret::HandleDestruction()
 {
 	Super::HandleDestruction();
+
+	GetWorld()->GetTimerManager().ClearTimer(FireRateTimerHandle);
+
+	Destroy();
 }
 
 void APawnTurret::CheckFireCondition()
 {
-	// If player == null || player is dead
-	//		Then Return
-	// 
-	// If player is in range
-	//		Then Fire!
-
-	if (!PlayerPawn)
+	if (!PlayerPawn || !PlayerPawn->IsPlayerAlive())
 	{
 		return;
 	}
