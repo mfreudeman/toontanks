@@ -34,6 +34,10 @@ void AProjectileBase::BeginPlay()
 	Super::BeginPlay();
 
 	PlayLaunchSound();
+	if (GetOwner() == GetWorld()->GetFirstPlayerController()->GetParentActor())
+	{
+		DoCameraShake();
+	}
 }
 
 void AProjectileBase::PlayLaunchSound()
@@ -57,11 +61,15 @@ void AProjectileBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyOwner->GetInstigatorController(), this, DamageType);
 		
 		SpawnHitParticleEmitter();
-
 		PlayHitSound();
 
 		Destroy();
 	}
+}
+
+void AProjectileBase::DoCameraShake()
+{
+	GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(HitCameraShake);
 }
 
 void AProjectileBase::PlayHitSound()

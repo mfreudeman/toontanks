@@ -56,6 +56,12 @@ void APawnBase::HandleDestruction()
 {
 	SpawnDeathParticle();
 	PlayDeathSound();
+	DoDeathCameraShake();
+}
+
+void APawnBase::DoDeathCameraShake()
+{
+	GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(DeathCameraShake);
 }
 
 void APawnBase::PlayDeathSound()

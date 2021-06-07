@@ -21,6 +21,8 @@ public:
 
 	virtual void HandleDestruction();
 
+	void DoDeathCameraShake();
+
 	void PlayDeathSound();
 
 	void SpawnDeathParticle();
@@ -51,6 +53,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Effects", meta = (AllowPrivateAccess = "true"))
 	UParticleSystem* DeathParticle;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UCameraShakeBase> DeathCameraShake;
 
 	UPROPERTY(EditAnywhere, Category = "Sounds", meta = (AllowPrivateAccess = "true"))
 	USoundBase* DeathSound;
