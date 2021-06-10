@@ -24,6 +24,8 @@ protected:
 	UFUNCTION()
 	void TakeDamage(AActor* DamageActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
+	void CheckAndNotifyPlayerHealthChange(AActor* DamageActor);
+
 private:
 	UPROPERTY(EditAnywhere)
 	float DefaultHealth = 100.f;

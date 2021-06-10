@@ -33,6 +33,8 @@ protected:
 	virtual void FireProjectile();
 
 private:
+	bool bIsPossessed = false;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadonly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCapsuleComponent* CapsuleComp;
 

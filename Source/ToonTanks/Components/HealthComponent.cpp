@@ -2,8 +2,10 @@
 
 
 #include "HealthComponent.h"
-#include "ToonTanks/GameModes/TankGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+
+#include "ToonTanks/GameModes/TankGameModeBase.h"
+#include "ToonTanks/Pawns/PawnTank.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -14,7 +16,6 @@ UHealthComponent::UHealthComponent()
 
 }
 
-
 // Called when the game starts
 void UHealthComponent::BeginPlay()
 {
@@ -24,6 +25,8 @@ void UHealthComponent::BeginPlay()
 	GameModeRef = Cast<ATankGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage);
+
+	CheckAndNotifyPlayerHealthChange(GetOwner());
 }
 
 void UHealthComponent::TakeDamage(AActor* DamageActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -37,6 +40,8 @@ void UHealthComponent::TakeDamage(AActor* DamageActor, float Damage, const UDama
 
 	UE_LOG(LogTemp, Warning, TEXT("%s Hit! New health: %f"), *GetOwner()->GetName(), Health);
 
+	CheckAndNotifyPlayerHealthChange(DamageActor);
+
 	if (Health <= 0)
 	{
 		if (GameModeRef)
@@ -46,6 +51,17 @@ void UHealthComponent::TakeDamage(AActor* DamageActor, float Damage, const UDama
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Health Component has no reference to the Game Mode"));
+		}
+	}
+}
+
+void UHealthComponent::CheckAndNotifyPlayerHealthChange(AActor* DamageActor)
+{
+	if (APawnTank* PlayerPawn = Cast<APawnTank>(DamageActor))
+	{
+		if (GameModeRef)
+		{
+			GameModeRef->PlayerHealthDidChange(Health, DefaultHealth);
 		}
 	}
 }

@@ -7,6 +7,11 @@
 #include "ToonTanks/Pawns/PawnTank.h"
 #include "ToonTanks/Pawns/PawnTurret.h"
 
+void ATankGameModeBase::PlayerHealthDidChange(float CurrentHealth, float MaxHealth)
+{
+	PlayerHealthUpdated(CurrentHealth, MaxHealth);
+}
+
 void ATankGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -19,8 +24,15 @@ void ATankGameModeBase::ActorDied(AActor* DeadActor)
 	if (DeadActor == PlayerTank)
 	{
 		PlayerTank->HandleDestruction();
-		
-		HandleGameOver(false);
+
+		if (--NumberOfLives <= 0)
+		{
+			HandleGameOver(false);
+		}
+		else
+		{
+			HandleRespawn();
+		}
 		
 		if (PlayerControllerRef)
 		{
@@ -34,6 +46,7 @@ void ATankGameModeBase::ActorDied(AActor* DeadActor)
 		{
 			HandleGameOver(true);
 		}
+		TurretCountChanged(NumberOfTargetTurrets);
 	}
 }
 
@@ -51,7 +64,9 @@ void ATankGameModeBase::HandleGameStart()
 	PlayerTank = Cast<APawnTank>(UGameplayStatics::GetPlayerPawn(this, 0));
 	PlayerControllerRef = Cast<APlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0));
 
+	// Call Blueprint Events GameStart event creates UI class blueprints.
 	GameStart();
+	TurretCountChanged(NumberOfTargetTurrets);
 
 	if (PlayerControllerRef)
 	{
@@ -62,6 +77,11 @@ void ATankGameModeBase::HandleGameStart()
 		);
 		GetWorld()->GetTimerManager().SetTimer(PlayerEnableHandle, PlayerEnableDelegate, StartDelay, false);
 	}
+}
+
+void ATankGameModeBase::HandleRespawn()
+{
+	
 }
 
 void ATankGameModeBase::HandleGameOver(bool bPlayerWon)
